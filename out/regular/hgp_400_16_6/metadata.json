@@ -1,0 +1,65 @@
+{
+  "field": 2,
+  "n": 400,
+  "k": 16,
+  "d": 6,
+  "d_x": 6,
+  "d_z": 6,
+  "distance_is_bound": false,
+  "num_checks_x": 192,
+  "num_checks_z": 192,
+  "max_check_weight": 7,
+  "hx_shape": [
+    192,
+    400
+  ],
+  "hz_shape": [
+    192,
+    400
+  ],
+  "hx_row_weight_min": 7,
+  "hx_row_weight_max": 7,
+  "hz_row_weight_min": 7,
+  "hz_row_weight_max": 7,
+  "css_commute": true,
+  "sector_size": [
+    [
+      256,
+      192
+    ],
+    [
+      192,
+      144
+    ]
+  ],
+  "code_a": {
+    "spec": "mackay:16",
+    "name": "ClassicalCode",
+    "n": 16,
+    "k": 4,
+    "d": 6,
+    "num_checks": 12,
+    "check_shape": [
+      12,
+      16
+    ],
+    "row_weight_min": 4,
+    "row_weight_max": 4
+  },
+  "code_b": {
+    "spec": "mackay:16",
+    "name": "ClassicalCode",
+    "n": 16,
+    "k": 4,
+    "d": 6,
+    "num_checks": 12,
+    "check_shape": [
+      12,
+      16
+    ],
+    "row_weight_min": 4,
+    "row_weight_max": 4
+  },
+  "spec_a": "mackay:16",
+  "spec_b": "mackay:16"
+}

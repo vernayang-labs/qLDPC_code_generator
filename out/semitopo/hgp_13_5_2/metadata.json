@@ -1,0 +1,65 @@
+{
+  "field": 2,
+  "n": 13,
+  "k": 5,
+  "d": 2,
+  "d_x": 2,
+  "d_z": 2,
+  "distance_is_bound": false,
+  "num_checks_x": 6,
+  "num_checks_z": 6,
+  "max_check_weight": 5,
+  "hx_shape": [
+    6,
+    13
+  ],
+  "hz_shape": [
+    6,
+    13
+  ],
+  "hx_row_weight_min": 5,
+  "hx_row_weight_max": 5,
+  "hz_row_weight_min": 5,
+  "hz_row_weight_max": 5,
+  "css_commute": true,
+  "sector_size": [
+    [
+      9,
+      6
+    ],
+    [
+      6,
+      4
+    ]
+  ],
+  "code_a": {
+    "spec": "semitopo:0",
+    "name": "ClassicalCode",
+    "n": 3,
+    "k": 2,
+    "d": 2,
+    "num_checks": 2,
+    "check_shape": [
+      2,
+      3
+    ],
+    "row_weight_min": 3,
+    "row_weight_max": 3
+  },
+  "code_b": {
+    "spec": "semitopo:0",
+    "name": "ClassicalCode",
+    "n": 3,
+    "k": 2,
+    "d": 2,
+    "num_checks": 2,
+    "check_shape": [
+      2,
+      3
+    ],
+    "row_weight_min": 3,
+    "row_weight_max": 3
+  },
+  "spec_a": "semitopo:0",
+  "spec_b": "semitopo:0"
+}
