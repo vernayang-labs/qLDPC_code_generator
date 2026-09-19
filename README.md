@@ -2,15 +2,17 @@
 
 Construct CSS [hypergraph product (HGP)](https://errorcorrectionzoo.org/c/hypergraph_product) codes from classical seed codes, using the [`qldpc`](https://github.com/qLDPCOrg/qLDPC) library.
 
-An HGP code is built from two classical linear codes \(A\) and \(B\) with parity-check matrices \(H_1\) and \(H_2\):
+An HGP code is built from two classical linear codes $A$ and $B$ with parity-check matrices $H_1$ and $H_2$:
 
-\[
-H_X = \bigl[ H_1 \otimes I_{n_2} \ \big|\  I_{m_1} \otimes H_2^\top \bigr],
-\qquad
-H_Z = \bigl[ I_{n_1} \otimes H_2 \ \big|\  H_1^\top \otimes I_{m_2} \bigr],
-\]
+$$
+H_X = \left[ H_1 \otimes I_{n_2} \,\vert\, I_{m_1} \otimes H_2^{\top} \right]
+$$
 
-where \((m_i, n_i) = H_i.\mathrm{shape}\). If \(B\) is omitted, the construction uses \(A\) twice (the homological square). This is the check-matrix product of Tillich and Zémor [[3]](#references).
+$$
+H_Z = \left[ I_{n_1} \otimes H_2 \,\vert\, H_1^{\top} \otimes I_{m_2} \right]
+$$
+
+where $(m_i, n_i)$ is the shape of $H_i$. If $B$ is omitted, the construction uses $A$ twice (the homological square). This is the check-matrix product of Tillich and Zémor [[3]](#references).
 
 Built-in MacKay–Neal and semitopological seeds reproduce the constant-rate and augmented families in Roffe *et al.* (2020) [[1]](#references). The length-16 MacKay matrix is the published seed of Example 3.2 in Roffe *et al.* (2023) [[2]](#references).
 
@@ -36,51 +38,57 @@ python construct_hgp_code.py --code-a semitopo:0 --save-dir out/semitopo/hgp_13_
 python construct_hgp_code.py --code-a random:10,6 --seed 0 --no-distance
 ```
 
-`--save-dir` writes `hx.txt`, `hz.txt`, `logical_x.txt`, `logical_z.txt`, NumPy copies of \(H_X\) and \(H_Z\), and `metadata.json`.
+`--save-dir` writes `hx.txt`, `hz.txt`, `logical_x.txt`, `logical_z.txt`, NumPy copies of $H_X$ and $H_Z$, and `metadata.json`.
 
-Use `--no-distance` to skip exact distance (useful for large or random seeds). `--bound N` replaces exact \(d\) with an upper bound from `N` QDistRnd trials.
+Use `--no-distance` to skip exact distance (useful for large or random seeds). `--bound N` replaces exact $d$ with an upper bound from $N$ QDistRnd trials.
 
 ### Seed specs
 
 | Spec | Classical seed |
 | --- | --- |
-| `repetition:N` | Length-\(N\) repetition code |
-| `ring:N` | Length-\(N\) ring (cycle) code |
-| `hamming:M` | Hamming code of rank \(M\) (binary length \(2^M-1\)) |
+| `repetition:N` | Length-$N$ repetition code |
+| `ring:N` | Length-$N$ ring (cycle) code |
+| `hamming:M` | Hamming code of rank $M$ (binary length $2^M-1$) |
 | `extended-hamming:M` | Extended Hamming code |
 | `simplex:K` | Simplex code |
 | `reed-muller:R,M` | Reed–Muller code |
 | `cyclic:N,POLY` | Cyclic code, e.g. `cyclic:7,1+x+x**3` |
-| `mackay:N` | (3,4)-regular MacKay–Neal seed; \(N\in\{16,20,24\}\) [[1](#references),[2](#references),[4](#references)] |
-| `semitopo:G` | (2,3)-LDPC parent with edge-augmentation \(g\) [[1]](#references) |
-| `random:N,M` | Random code with \(N\) bits and \(M\) checks |
+| `mackay:N` | (3,4)-regular MacKay–Neal seed; $N \in \{16,20,24\}$ [[1](#references),[2](#references),[4](#references)] |
+| `semitopo:G` | (2,3)-LDPC parent with edge-augmentation $g$ [[1]](#references) |
+| `random:N,M` | Random code with $N$ bits and $M$ checks |
 | `matrix:PATH` | Integer parity-check matrix from a file |
 
-Default: `--code-a hamming:3` (the \([7,4,3]\) Hamming code), with \(B = A\).
+Default: `--code-a hamming:3` (the `[7, 4, 3]` Hamming code), with $B = A$.
 
 ## Constructed families
 
 ### Constant-rate MacKay–Neal HGP codes
 
-(3,4)-regular classical seeds with girth \(>4\) and full-rank \(H\), so \(H^\top\) encodes nothing (\(d^T=\infty\)). The hypergraph product is the rate-\(0.04\) (8,7)-QLDPC family of Table I in [[1]](#references). The \(n=16\) matrix is Example 3.2 / Appendix A of [[2]](#references); \(n=20\) and \(n=24\) are ensemble-equivalent (3,4)-regular seeds with the same classical \([n,k,d]\).
+(3,4)-regular classical seeds with girth $> 4$ and full-rank $H$, so $H^{\top}$ encodes nothing ($d^T = \infty$). The hypergraph product is the rate-$0.04$ (8,7)-QLDPC family of Table I in [[1]](#references). The $n=16$ matrix is Example 3.2 / Appendix A of [[2]](#references); $n=20$ and $n=24$ are ensemble-equivalent (3,4)-regular seeds with the same classical `[n, k, d]`.
 
-| Seed | Classical \([n,k,d]\) | HGP \([[n,k,d]]\) | Output |
+| Seed | Classical `[n, k, d]` | HGP `[[n, k, d]]` | Output |
 | --- | --- | --- | --- |
-| `mackay:16` | \([16,4,6]\) | \([[400,16,6]]\) | `out/regular/hgp_400_16_6/` |
-| `mackay:20` | \([20,5,8]\) | \([[625,25,8]]\) | `out/regular/hgp_625_25_8/` |
-| `mackay:24` | \([24,6,10]\) | \([[900,36,10]]\) | `out/regular/hgp_900_36_10/` |
+| `mackay:16` | `[16, 4, 6]` | `[[400, 16, 6]]` | `out/regular/hgp_400_16_6/` |
+| `mackay:20` | `[20, 5, 8]` | `[[625, 25, 8]]` | `out/regular/hgp_625_25_8/` |
+| `mackay:24` | `[24, 6, 10]` | `[[900, 36, 10]]` | `out/regular/hgp_900_36_10/` |
 
 ### Semitopological HGP codes
 
-The parent is the \([3,2,2]\) (2,3)-LDPC code with \(H=\bigl[\begin{smallmatrix}1&1&1\\1&1&1\end{smallmatrix}\bigr]\). Edge-augmenting every Tanner edge by a length-\(g\) repetition chain, then taking the hypergraph product, yields the family \(\mathrm{HGP}(C_H^{*g})\) of Table II / Fig. 2 in [[1]](#references).
+The parent is the `[3, 2, 2]` (2,3)-LDPC code
 
-| Seed | Paper \([[n,k,d]]\) [[1]](#references) | This repo | Output |
+$$
+H = \begin{pmatrix} 1 & 1 & 1 \\ 1 & 1 & 1 \end{pmatrix}
+$$
+
+Edge-augmenting every Tanner edge by a length-$g$ repetition chain, then taking the hypergraph product, yields the family $\mathrm{HGP}(C_H^{*g})$ of Table II / Fig. 2 in [[1]](#references).
+
+| Seed | Paper `[[n, k, d]]` [[1]](#references) | This repo | Output |
 | --- | --- | --- | --- |
-| `semitopo:0` | \([[13,5,2]]\) | \([[13,5,2]]\) | `out/semitopo/hgp_13_5_2/` |
-| `semitopo:1` | \([[145,5,6]]\) | \([[145,5,6]]\) | `out/semitopo/hgp_145_5_6/` |
-| `semitopo:2` | \([[421,5,10]]\) | \([[421,13,3]]\) | `out/semitopo/hgp_421_5_10/` |
+| `semitopo:0` | `[[13, 5, 2]]` | `[[13, 5, 2]]` | `out/semitopo/hgp_13_5_2/` |
+| `semitopo:1` | `[[145, 5, 6]]` | `[[145, 5, 6]]` | `out/semitopo/hgp_145_5_6/` |
+| `semitopo:2` | `[[421, 5, 10]]` | `[[421, 13, 3]]` | `out/semitopo/hgp_421_5_10/` |
 
-For \(g=2\), the block length matches Table II, but the logical dimension and distance differ from the published parameters (the paper’s classical seed is \([15,2,10]\); this implementation currently produces a \([15,3,3]\) seed). Directory names follow the table in [[1]](#references); `metadata.json` records the values computed here.
+For $g=2$, the block length matches Table II, but the logical dimension and distance differ from the published parameters (the paper’s classical seed is `[15, 2, 10]`; this implementation currently produces a `[15, 3, 3]` seed). Directory names follow the table in [[1]](#references); `metadata.json` records the values computed here.
 
 ## References
 
