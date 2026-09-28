@@ -82,13 +82,11 @@ $$
 
 Edge-augmenting every Tanner edge by a length-$g$ repetition chain, then taking the hypergraph product, yields the family $\mathrm{HGP}(C_H^{*g})$ of Table II / Fig. 2 in [[1]](#references).
 
-| Seed | Paper `[[n, k, d]]` [[1]](#references) | This repo | Output |
-| --- | --- | --- | --- |
-| `semitopo:0` | `[[13, 5, 2]]` | `[[13, 5, 2]]` | `out/semitopo/hgp_13_5_2/` |
-| `semitopo:1` | `[[145, 5, 6]]` | `[[145, 5, 6]]` | `out/semitopo/hgp_145_5_6/` |
-| `semitopo:2` | `[[421, 5, 10]]` | `[[421, 13, 3]]` | `out/semitopo/hgp_421_5_10/` |
-
-For $g=2$, the block length matches Table II, but the logical dimension and distance differ from the published parameters (the paper’s classical seed is `[15, 2, 10]`; this implementation currently produces a `[15, 3, 3]` seed). Directory names follow the table in [[1]](#references); `metadata.json` records the values computed here.
+| Seed | HGP `[[n, k, d]]` | Output |
+| --- | --- | --- |
+| `semitopo:0` | `[[13, 5, 2]]` | `out/semitopo/hgp_13_5_2/` |
+| `semitopo:1` | `[[145, 5, 6]]` | `out/semitopo/hgp_145_5_6/` |
+| `semitopo:2` | `[[421, 5, 10]]` | `out/semitopo/hgp_421_5_10/` |
 
 ## References
 

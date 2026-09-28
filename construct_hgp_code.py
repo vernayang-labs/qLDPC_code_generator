@@ -146,7 +146,7 @@ def parse_seed(spec: str, field: int, seed: int | None) -> ClassicalCode:
         reed-muller:R,M
         cyclic:N,POLY          e.g. cyclic:7,1+x+x**3
         mackay:N               (3,4)-regular MacKay seed; N=16,20,24 → [[400,16,6]], [[625,25,8]], [[900,36,10]]
-        semitopo:G             (2,3)-LDPC parent with edge-augmentation g (g=0 → [[13,5,2]])
+        semitopo:G             (2,3)-LDPC parent with edge-augmentation g (g=0,1,2 → [[13,5,2]], [[145,5,6]], [[421,5,10]])
         random:N,M             N bits, M checks
         matrix:PATH            integer parity-check matrix (whitespace / commas)
     """
@@ -247,11 +247,18 @@ def _semitopo_seed(payload: str, field: int) -> ClassicalCode:
 
 
 def _edge_augment(matrix: np.ndarray, g: int) -> np.ndarray:
-    """Replace every Tanner-graph edge with a length-g repetition chain.
+    """Replace every Tanner-graph edge with a length-g repetition path.
 
-    For g=0 the parent matrix is returned unchanged.  For g>=1 each 1-entry
-    H[i,j] is replaced by a g×g path (identity plus superdiagonal) welded
-    between parent bit j and parent check i, as in arXiv:2005.07016.
+    For g=0 the parent matrix is returned unchanged.  For g>=1 the edge
+    between parent check i and parent bit j becomes the path
+
+        v_j -- u_1 -- b_1 -- u_2 -- b_2 -- ... -- u_g -- b_g -- u_i
+
+    so every new data node has degree 2 (as required by Appendix A of
+    arXiv:2005.07016).  The g×g chain block is therefore identity plus
+    subdiagonal, not superdiagonal: a superdiagonal chain leaves the first
+    new bit at degree 1 and the last new check at weight 1, which for g>=2
+    forces those bits to 0 and drops the parent parity checks.
     """
     parent = np.asarray(matrix, dtype=int)
     if g == 0:
@@ -267,8 +274,8 @@ def _edge_augment(matrix: np.ndarray, g: int) -> np.ndarray:
         chain_bit0 = n_bits + edge_index * g
         for step in range(g):
             augmented[chain_check0 + step, chain_bit0 + step] = 1
-            if step < g - 1:
-                augmented[chain_check0 + step, chain_bit0 + step + 1] = 1
+            if step > 0:
+                augmented[chain_check0 + step, chain_bit0 + step - 1] = 1
         augmented[chain_check0, bit] = 1
         augmented[check, chain_bit0 + g - 1] = 1
     return augmented
